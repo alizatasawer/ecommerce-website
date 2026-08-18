@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Docket — Order &amp; Delivery Console</title>
+<meta name="description" content="Docket: an OOP e-commerce order and delivery management console demonstrating encapsulation, abstraction, inheritance and polymorphism." />
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ HEADER ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26">
+          <path d="M4 10 L16 4 L28 10 L16 16 Z" fill="var(--amber)"/>
+          <path d="M4 10 L16 16 L16 28 L4 22 Z" fill="var(--teal)" opacity="0.85"/>
+          <path d="M28 10 L16 16 L16 28 L28 22 Z" fill="#4C5A6B"/>
+        </svg>
+      </span>
+      <div class="brand__text">
+        <span class="brand__name">DOCKET</span>
+        <span class="brand__tag">order &amp; delivery console</span>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab is-active" data-tab="catalog" role="tab" aria-selected="true">Catalog</button>
+      <button class="tab" data-tab="cart" role="tab" aria-selected="false">Cart <span class="tab__count" id="cartCount">0</span></button>
+      <button class="tab" data-tab="orders" role="tab" aria-selected="false">Orders <span class="tab__count" id="ordersCount">0</span></button>
+      <button class="tab" data-tab="model" role="tab" aria-selected="false">Class Map</button>
+    </nav>
+
+    <div class="identity">
+      <label class="identity__label" for="customerSelect">Signed in as</label>
+      <select id="customerSelect" class="identity__select"></select>
+      <div class="identity__meta">
+        <span class="pill" id="membershipPill">—</span>
+        <span class="wallet" id="walletBalance">$0.00</span>
+      </div>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ============ LAYOUT ============ -->
+  <div class="layout">
+
+    <main class="main">
+
+      <!-- ---------- CATALOG ---------- -->
+      <section class="panel" id="panel-catalog" data-panel="catalog">
+        <div class="panel__head">
+          <div>
+            <h1 class="panel__title">Catalog</h1>
+            <p class="panel__sub">Three product classes, one shared contract: <code>calculatePrice()</code>.</p>
+          </div>
+          <div class="filter-group" role="group" aria-label="Filter by product type">
+            <button class="chip is-active" data-filter="all">All</button>
+            <button class="chip" data-filter="Physical">Physical</button>
+            <button class="chip" data-filter="Digital">Digital</button>
+            <button class="chip" data-filter="Subscription">Subscription</button>
+          </div>
+        </div>
+        <div class="grid" id="catalogGrid"></div>
+      </section>
+
+      <!-- ---------- CART / CHECKOUT ---------- -->
+      <section class="panel is-hidden" id="panel-cart" data-panel="cart">
+        <div class="panel__head">
+          <div>
+            <h1 class="panel__title">Cart &amp; Checkout</h1>
+            <p class="panel__sub">Every line below recalculates through polymorphic strategy objects.</p>
+          </div>
+        </div>
+
+        <div class="checkout-grid">
+          <div class="cart-lines" id="cartLines">
+            <p class="empty-state" id="cartEmpty">Your cart is empty. Add something from the Catalog.</p>
+          </div>
+
+          <aside class="checkout-side">
+
+            <div class="card">
+              <h3 class="card__title">Promo code</h3>
+              <div class="promo-row">
+                <select id="promoSelect">
+                  <option value="">No promo code</option>
+                </select>
+                <button class="btn btn--ghost" id="applyPromoBtn">Apply</button>
+              </div>
+              <p class="hint" id="promoHint"></p>
+            </div>
+
+            <div class="card">
+              <h3 class="card__title">Delivery method</h3>
+              <div class="option-list" id="deliveryOptions"></div>
+            </div>
+
+            <div class="card">
+              <h3 class="card__title">Payment method</h3>
+              <div class="option-list" id="paymentOptions"></div>
+              <div id="paymentFields" class="payment-fields"></div>
+            </div>
+
+            <div class="card breakdown">
+              <h3 class="card__title">Order total</h3>
+              <dl class="breakdown__list" id="breakdownList"></dl>
+              <button class="btn btn--primary btn--block" id="placeOrderBtn">Place order</button>
+            </div>
+
+          </aside>
+        </div>
+      </section>
+
+      <!-- ---------- ORDERS ---------- -->
+      <section class="panel is-hidden" id="panel-orders" data-panel="orders">
+        <div class="panel__head">
+          <div>
+            <h1 class="panel__title">Orders</h1>
+            <p class="panel__sub">Every state change runs through <code>Order</code>'s guarded lifecycle methods.</p>
+          </div>
+        </div>
+        <div class="order-list" id="orderList">
+          <p class="empty-state" id="ordersEmpty">No orders yet. Place one from the Cart tab.</p>
+        </div>
+      </section>
+
+      <!-- ---------- CLASS MAP ---------- -->
+      <section class="panel is-hidden" id="panel-model" data-panel="model">
+        <div class="panel__head">
+          <div>
+            <h1 class="panel__title">Class map</h1>
+            <p class="panel__sub">The object model behind the console — see <code>/js/models</code>.</p>
+          </div>
+        </div>
+        <div class="classmap" id="classMap"></div>
+      </section>
+
+    </main>
+
+    <!-- ============ SYSTEM LOG ============ -->
+    <aside class="syslog" aria-label="System log">
+      <div class="syslog__head">
+        <span class="syslog__dot" aria-hidden="true"></span>
+        <span>SYSTEM LOG</span>
+        <button class="syslog__clear" id="clearLogBtn" title="Clear log">clear</button>
+      </div>
+      <div class="syslog__body" id="syslogBody"></div>
+    </aside>
+
+  </div>
+</div>
+
+<template id="tpl-order-log-line"></template>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
